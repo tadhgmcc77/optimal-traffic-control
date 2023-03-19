@@ -1,0 +1,24 @@
+DQN
+
+Initialize replay memory: D = []
+s= SENSE()
+do forever:
+    rand = a randomly-generated number in (0,1)
+    if rand < ε:
+        choose action randomly
+
+    else:
+        a = argMAXaQ(s,a)
+
+    r = EXECUTE(a)
+    s' = SENSE()
+    Store <s,a,r,s'> in D
+
+    Randomly choose a mini-batch X of examples from D
+    For each <s,a,r,s'> ∈ X calculate the target value:
+    r + γ MAXa'Q(s',a')
+
+    Train the network on mini-batch X (one iteration only) using loss function:
+    1/2 Σ<s,a,r,s'> ∈ X [r + γ MAXa'Q(s',a') - Q(s,a)]^2
+    s = s'
+    

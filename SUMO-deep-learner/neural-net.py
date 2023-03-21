@@ -24,8 +24,17 @@ class TrainNeuralNet:
         inputs = keras.Input(shape=(self.input_dimemsions,))
         # Create input layer where no.inputs == number of possible states
         x = layers.Dense(width, activation='relu')(inputs)
-        # Create a 
+        # Create the input amount of hidden layers
         for i in range(num_layers):
             x = layers.Dense(width, activation='relu')(x)
         # No.outputs is = number of possible actions to take | activation is linear because we are values (regression)
         outputs = layers.Dense(self._output_dimensions, activation='linear')(x)
+
+        network = keras.Model(inputs=inputs, outputs=outputs, name='model')
+        network.compile(loss=losses.mean_squared_error, optimizer=Adam(lr=self._learning_rate))
+        return network
+    
+    def predict_single(self, state):
+        state = np.reshape(state, [1, self.input_dimemsions])
+        
+    

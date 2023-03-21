@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
-    <tlLogic id="J2" type="static" programID="J2" offset="0">
-        <!-- <phase duration="42" state="012"/> -->
-        <!-- Green light-->
-        <phase duration="21" state="GGG"/>
-        <!-- Yellow light-->
-        <phase duration="3" state="yyy"/>
-        <!-- Red light-->
-        <phase duration="21" state="rrr"/>
+    <tlLogic id="2036623" type="actuated" programID="J2" offset="0">
+        <!-- <phase duration="42" maxDur="63" minDur="21" state="0123456"/> -->
 
-        <!-- Second Phase-->
+       <!-- Green light-->
+        <phase duration="42" maxDur="63" minDur="21" state="GGGgrr"/>
+
+        <!-- Yellow light-->
+        <phase duration="3" state="yyyyrr"/>
+        <phase duration="3" state="rrrrrr"/>
+
+        <!-- second green phase-->
+        <phase duration="42" maxDur="63" minDur="21" state="rrrrGg"/>
+
+        <phase duration="3" state="rrrryy"/>
+
+        <phase duration="3" state="rrrrrr"/>
 
     </tlLogic>
 </additional>

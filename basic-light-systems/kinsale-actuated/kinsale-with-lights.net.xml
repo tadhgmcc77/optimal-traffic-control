@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-03-06 20:46:56 by Eclipse SUMO netedit Version 1.14.1
+<!-- generated on 2023-03-21 16:49:56 by Eclipse SUMO netedit Version 1.14.1
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\tadhg\OneDrive\Desktop\FYP\basic-light-systems\kinsale-lights\kinsale-with-lights.net.xml"/>
+        <sumo-net-file value="C:\Users\tadhg\OneDrive\Desktop\GIT\optimal-traffic-control\basic-light-systems\kinsale-actuated\kinsale-with-lights.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\tadhg\OneDrive\Desktop\FYP\basic-light-systems\kinsale-lights\kinsale-with-lights.net.xml"/>
+        <output-file value="C:\Users\tadhg\OneDrive\Desktop\GIT\optimal-traffic-control\basic-light-systems\kinsale-actuated\kinsale-with-lights.net.xml"/>
     </output>
 
     <processing>
@@ -594,11 +594,26 @@
         <phase duration="39" state="rrrrGG"/>
         <phase duration="6"  state="rrrryy"/>
     </tlLogic>
+    <tlLogic id="2036623" type="actuated" programID="J2" offset="0">
+        <phase duration="42" state="GGGgrr" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="yyyyrr"/>
+        <phase duration="3"  state="rrrrrr"/>
+        <phase duration="42" state="rrrrGg" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="rrrryy"/>
+        <phase duration="3"  state="rrrrrr"/>
+    </tlLogic>
     <tlLogic id="241744826" type="static" programID="0" offset="0">
         <phase duration="39" state="GGGGrrr"/>
         <phase duration="6"  state="yyyyrrr"/>
         <phase duration="39" state="rrrrGGG"/>
         <phase duration="6"  state="rrrryyy"/>
+    </tlLogic>
+    <tlLogic id="241744826" type="actuated" programID="J1" offset="0">
+        <phase duration="42" state="GGGgrrr" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="yyyyrrr"/>
+        <phase duration="42" state="rrrrGGg" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="rrrryyy"/>
+        <phase duration="3"  state="rrrrrrr"/>
     </tlLogic>
     <tlLogic id="322604703" type="static" programID="0" offset="0">
         <phase duration="41" state="GGGrr"/>
@@ -612,6 +627,14 @@
         <phase duration="39" state="rrrGGG"/>
         <phase duration="6"  state="rrryyy"/>
     </tlLogic>
+    <tlLogic id="3565841" type="actuated" programID="J5" offset="0">
+        <phase duration="42" state="GGGrrr" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="yyyrrr"/>
+        <phase duration="3"  state="rrrrrr"/>
+        <phase duration="42" state="rrrGGG" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="rrryyy"/>
+        <phase duration="3"  state="rrrrrr"/>
+    </tlLogic>
     <tlLogic id="9675765167" type="static" programID="0" offset="0">
         <phase duration="39" state="GGGrrr"/>
         <phase duration="6"  state="yyyrrr"/>
@@ -624,10 +647,18 @@
         <phase duration="39" state="rrGG"/>
         <phase duration="6"  state="rryy"/>
     </tlLogic>
-    <tlLogic id="J4" type="static" programID="J4" offset="0">
-        <phase duration="21" state="GGG"/>
+    <tlLogic id="9675765169" type="actuated" programID="J3" offset="0">
+        <phase duration="42" state="GGrr" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="yyrr"/>
+        <phase duration="3"  state="rrrr"/>
+        <phase duration="42" state="rrGG" minDur="21" maxDur="63"/>
+        <phase duration="3"  state="rryy"/>
+        <phase duration="3"  state="rrrr"/>
+    </tlLogic>
+    <tlLogic id="J4" type="actuated" programID="J4" offset="0">
+        <phase duration="42" state="GGG" minDur="21" maxDur="63"/>
         <phase duration="3"  state="yyy"/>
-        <phase duration="21" state="rrr"/>
+        <phase duration="12" state="rrr"/>
     </tlLogic>
 
     <junction id="10380987" type="dead_end" x="476.38" y="31.99" incLanes="29323718#3_0 29323718#3_1" intLanes="" shape="475.64,35.10 477.12,28.88"/>

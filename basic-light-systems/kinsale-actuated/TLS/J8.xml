@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <tlLogic id="J8" type="static" programID="J8" offset="0">
+        <!-- <phase duration="42" state="012"/> -->
+        <!-- Green light-->
+        <phase duration="21" state="GGG"/>
+        <!-- Yellow light-->
+        <phase duration="3" state="yyy"/>
+        <!-- Red light-->
+        <phase duration="21" state="rrr"/>
+
+        <!-- Second Phase-->
+
+    </tlLogic>
+</additional>

@@ -95,9 +95,43 @@ class Simulation:
 
             return simulation_time, training_time
         
-        def _replay(self):
-            batch = self._neural_net.get_samples(self._neural_net.batch_size)
-            
+    def _replay(self):
+        batch = self._replay_memory.get_samples(self._neural_net.batch_size)
+
+        # if samples are available, extract state and next state from each
+        if len(batch) > 0:
+            states = np.array([val[0] for val in batch])
+            next_states = np.array([val[3] for val in batch])
+
+            qsa = self._neural_net.predict_batch(states)
+            qsa_next = self._neural_net.predict_batch(next_states)
+
+            # setup training arrays
+            x = np.zeros((len(batch), self._num_states))
+            y = np.zeros((len(batch), self._num_actions))
+
+            for i, b in enumerate(batch):
+                state, action, reward, _ = b[0], b[1], b[2], b[3]  # extract state/action/reward/state'
+                current_q = qsa[i]  # get the predicted Q(state)
+                current_q[action] = reward + self._gamma * np.amax(qsa_next[i])  # update Q(state, action)
+                x[i] = state
+                y[i] = current_q  # Q(state) that includes the updated action value
+
+            self._Model.train_batch(x, y)  # train the NN
+
+
+
+                
+
+
+
+    def _choose_action(self, state, epsilon):
+        # expoloration vs exploitation
+        if random.random() < epsilon:
+            return random.randint(0, self._num_actions - 1) # random action
+        else:
+            return np.argmax(self._Model.predict_one(state)) # the best action given the current state
+
 
 
 

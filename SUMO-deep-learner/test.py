@@ -36,3 +36,8 @@ state -----------
   0. 0. 0. 0. 0. 0. 0. 0.]]
 
 '''
+
+x = (['apple', 'sauce'], ['banana', 'help'], ['cherry', 'cola'])
+for a, y in enumerate(x):
+    print(a)
+

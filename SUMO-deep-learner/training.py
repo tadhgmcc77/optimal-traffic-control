@@ -14,41 +14,37 @@ PHASE_EW_YELLOW = 5
 PHASE_EWL_GREEN = 6  # action 3 code 11
 PHASE_EWL_YELLOW = 7
 
-
 class Simulation:
     def __init__(self, neural_net, replay_memory, TrafficGen, sumo_cmd, gamma, max_steps, green_duration, yellow_duration, num_states, num_actions, training_epochs):
         self._neural_net = neural_net
         self._replay_memory = replay_memory
         self._TrafficGen = TrafficGen
-        self._gamma = 0.75
-        self._step = 0
         self._sumo_cmd = sumo_cmd
+        self._gamma = gamma
         self._max_steps = max_steps
         self._green_duration = green_duration
         self._yellow_duration = yellow_duration
         self._num_states = num_states
         self._num_actions = num_actions
+        self._training_epochs = training_epochs
+        self._step = 0
         self._reward_store = []
         self._cumulative_wait_store = []
         self._avg_queue_length_store = []
-        self._training_epochs = training_epochs
 
-
-    def run(self, episode, epsilon):
-        """
-        Runs an episode of simulation, then starts a training session
-        """
+    def run_simulation(self, episode, epsilon):
         start_time = timeit.default_timer()
 
-        # first, generate the route file for this simulation and set up sumo
+        #Generate traffic and route file for this simulation + configure sumo
         self._TrafficGen.generate_routefile(seed=episode)
         traci.start(self._sumo_cmd)
         print("Simulating...")
 
-        # inits
+        #initialise variables for simulation
         self._step = 0
         self._waiting_times = {}
         self._sum_neg_reward = 0
+        self._sum_total_reward = 0
         self._sum_queue_length = 0
         self._sum_waiting_time = 0
         old_total_wait = 0
@@ -56,23 +52,22 @@ class Simulation:
         old_action = -1
 
         while self._step < self._max_steps:
-
-            # get current state of the intersection
+            # get state of intersection
             current_state = self._get_state()
 
-            # calculate reward of previous action: (change in cumulative waiting time between actions)
-            # waiting time = seconds waited by a car since the spawn in the environment, cumulated for every car in incoming lanes
+            # calculate reward of previous action (change in total waiting time between previous and current action)
             current_total_wait = self._collect_waiting_times()
+
             reward = old_total_wait - current_total_wait
 
-            # saving the data into the memory
             if self._step != 0:
+                # add this state/action/reward to replay memory
                 self._Memory.add_sample((old_state, old_action, reward, current_state))
 
-            # choose the light phase to activate, based on the current state of the intersection
+            # choose next action to take
             action = self._choose_action(current_state, epsilon)
 
-            # if the chosen phase is different from the last phase, activate the yellow phase
+            # if chosen light phase is a change, activate yellow phase
             if self._step != 0 and old_action != action:
                 self._set_yellow_phase(old_action)
                 self._simulate(self._yellow_duration)
@@ -81,105 +76,29 @@ class Simulation:
             self._set_green_phase(action)
             self._simulate(self._green_duration)
 
-            # saving variables for later & accumulate reward
+            # save variables
             old_state = current_state
             old_action = action
             old_total_wait = current_total_wait
 
-            # saving only the meaningful reward to better see if the agent is behaving correctly
-            if reward < 0:
-                self._sum_neg_reward += reward
+            self._sum_total_reward += reward
 
-        self._save_episode_stats()
-        print("Total reward:", self._sum_neg_reward, "- Epsilon:", round(epsilon, 2))
-        traci.close()
-        simulation_time = round(timeit.default_timer() - start_time, 1)
+            self._save_episode_stats()
+            print("Total reward gained:", self._sum_total_reward, "- Epsilon:", round(epsilon, 2))
+            traci.close()
+            simulation_time = round(timeit.default_timer() - start_time, 1)
 
-        print("Training...")
-        start_time = timeit.default_timer()
-        for _ in range(self._training_epochs):
-            self._replay()
-        training_time = round(timeit.default_timer() - start_time, 1)
+            for i in range(self._training_epochs):
+                # perform replay memory training on the neural net, one (batch) for each epoch selected
+                self._replay()
+            training_time = round(timeit.default_timer() - start_time,1)
 
-        return simulation_time, training_time
+            return simulation_time, training_time
+        
+        def _replay(self):
+            batch = self._neural_net.get_samples(self._neural_net.batch_size)
+            
 
-
-    def _simulate(self, steps_todo):
-        """
-        Execute steps in sumo while gathering statistics
-        """
-        if (self._step + steps_todo) >= self._max_steps:  # do not do more steps than the maximum allowed number of steps
-            steps_todo = self._max_steps - self._step
-
-        while steps_todo > 0:
-            traci.simulationStep()  # simulate 1 step in sumo
-            self._step += 1 # update the step counter
-            steps_todo -= 1
-            queue_length = self._get_queue_length()
-            self._sum_queue_length += queue_length
-            self._sum_waiting_time += queue_length # 1 step while wating in queue means 1 second waited, for each car, therefore queue_lenght == waited_seconds
-
-
-    def _collect_waiting_times(self):
-        """
-        Retrieve the waiting time of every car in the incoming roads
-        """
-        incoming_roads = ["E2TL", "N2TL", "W2TL", "S2TL"]
-        car_list = traci.vehicle.getIDList()
-        for car_id in car_list:
-            wait_time = traci.vehicle.getAccumulatedWaitingTime(car_id)
-            road_id = traci.vehicle.getRoadID(car_id)  # get the road id where the car is located
-            if road_id in incoming_roads:  # consider only the waiting times of cars in incoming roads
-                self._waiting_times[car_id] = wait_time
-            else:
-                if car_id in self._waiting_times: # a car that was tracked has cleared the intersection
-                    del self._waiting_times[car_id] 
-        total_waiting_time = sum(self._waiting_times.values())
-        return total_waiting_time
-
-
-    def _choose_action(self, state, epsilon):
-        """
-        Decide wheter to perform an explorative or exploitative action, according to an epsilon-greedy policy
-        """
-        if random.random() < epsilon:
-            return random.randint(0, self._num_actions - 1) # random action
-        else:
-            return np.argmax(self._Model.predict_one(state)) # the best action given the current state
-
-
-    def _set_yellow_phase(self, old_action):
-        """
-        Activate the correct yellow light combination in sumo
-        """
-        yellow_phase_code = old_action * 2 + 1 # obtain the yellow phase code, based on the old action (ref on environment.net.xml)
-        traci.trafficlight.setPhase("TL", yellow_phase_code)
-
-
-    def _set_green_phase(self, action_number):
-        """
-        Activate the correct green light combination in sumo
-        """
-        if action_number == 0:
-            traci.trafficlight.setPhase("TL", PHASE_NS_GREEN)
-        elif action_number == 1:
-            traci.trafficlight.setPhase("TL", PHASE_NSL_GREEN)
-        elif action_number == 2:
-            traci.trafficlight.setPhase("TL", PHASE_EW_GREEN)
-        elif action_number == 3:
-            traci.trafficlight.setPhase("TL", PHASE_EWL_GREEN)
-
-
-    def _get_queue_length(self):
-        """
-        Retrieve the number of cars with speed = 0 in every incoming lane
-        """
-        halt_N = traci.edge.getLastStepHaltingNumber("N2TL")
-        halt_S = traci.edge.getLastStepHaltingNumber("S2TL")
-        halt_E = traci.edge.getLastStepHaltingNumber("E2TL")
-        halt_W = traci.edge.getLastStepHaltingNumber("W2TL")
-        queue_length = halt_N + halt_S + halt_E + halt_W
-        return queue_length
 
 
     def _get_state(self):
@@ -248,58 +167,73 @@ class Simulation:
 
             if valid_car:
                 state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
-
+        print(state)
         return state
+    
 
-
-    def _replay(self):
+    def _collect_waiting_times(self):
         """
-        Retrieve a group of samples from the memory and for each of them update the learning equation, then train
+        Retrieve the waiting time of every car in the incoming roads
         """
-        batch = self._Memory.get_samples(self._Model.batch_size)
+        incoming_roads = ["E2TL", "N2TL", "W2TL", "S2TL"]
+        car_list = traci.vehicle.getIDList()
+        for car_id in car_list:
+            wait_time = traci.vehicle.getAccumulatedWaitingTime(car_id)
+            road_id = traci.vehicle.getRoadID(car_id)  # get the road id where the car is located
+            if road_id in incoming_roads:  # consider only the waiting times of cars in incoming roads
+                self._waiting_times[car_id] = wait_time
+            else:
+                if car_id in self._waiting_times: # a car that was tracked has cleared the intersection
+                    del self._waiting_times[car_id] 
+        total_waiting_time = sum(self._waiting_times.values())
+        return total_waiting_time
 
-        if len(batch) > 0:  # if the memory is full enough
-            states = np.array([val[0] for val in batch])  # extract states from the batch
-            next_states = np.array([val[3] for val in batch])  # extract next states from the batch
+    def _set_yellow_phase(self, old_action):
+        """
+        Activate the correct yellow light combination in sumo
+        """
+        yellow_phase_code = old_action * 2 + 1 # obtain the yellow phase code, based on the old action (ref on environment.net.xml)
+        traci.trafficlight.setPhase("TL", yellow_phase_code)
 
-            # prediction
-            q_s_a = self._Model.predict_batch(states)  # predict Q(state), for every sample
-            q_s_a_d = self._Model.predict_batch(next_states)  # predict Q(next_state), for every sample
+    def _set_green_phase(self, action_number):
+        """
+        Activate the correct green light combination in sumo
+        """
+        if action_number == 0:
+            traci.trafficlight.setPhase("TL", PHASE_NS_GREEN)
+        elif action_number == 1:
+            traci.trafficlight.setPhase("TL", PHASE_NSL_GREEN)
+        elif action_number == 2:
+            traci.trafficlight.setPhase("TL", PHASE_EW_GREEN)
+        elif action_number == 3:
+            traci.trafficlight.setPhase("TL", PHASE_EWL_GREEN)
 
-            # setup training arrays
-            x = np.zeros((len(batch), self._num_states))
-            y = np.zeros((len(batch), self._num_actions))
+    def _simulate(self, steps_todo):
+        # Execute steps in sumo
+        if (self._step + steps_todo) >= self._max_steps:
+            steps_todo = self._max_steps - self._step
 
-            for i, b in enumerate(batch):
-                state, action, reward, _ = b[0], b[1], b[2], b[3]  # extract data from one sample
-                current_q = q_s_a[i]  # get the Q(state) predicted before
-                current_q[action] = reward + self._gamma * np.amax(q_s_a_d[i])  # update Q(state, action)
-                x[i] = state
-                y[i] = current_q  # Q(state) that includes the updated action value
-
-            self._Model.train_batch(x, y)  # train the NN
-
+        while steps_todo > 0:
+            traci.simulationStep()  # simulate 1 step in sumo
+            self._step += 1
+            steps_todo -= 1
+            new_queue_length = self._get_queue_length()
+            self._sum_queue_length += new_queue_length
+            # queue_length == waited_seconds
+            self._sum_waiting_time += new_queue_length
 
     def _save_episode_stats(self):
-        """
-        Save the stats of the episode to plot the graphs at the end of the session
-        """
         self._reward_store.append(self._sum_neg_reward)  # how much negative reward in this episode
         self._cumulative_wait_store.append(self._sum_waiting_time)  # total number of seconds waited by cars in this episode
         self._avg_queue_length_store.append(self._sum_queue_length / self._max_steps)  # average number of queued cars per step, in this episode
 
-
-    @property
-    def reward_store(self):
-        return self._reward_store
-
-
-    @property
-    def cumulative_wait_store(self):
-        return self._cumulative_wait_store
-
-
-    @property
-    def avg_queue_length_store(self):
-        return self._avg_queue_length_store
-
+    def _get_queue_length(self):
+        """
+        Retrieve the number of cars with speed = 0 in every incoming lane
+        """
+        halt_N = traci.edge.getLastStepHaltingNumber("N2TL")
+        halt_S = traci.edge.getLastStepHaltingNumber("S2TL")
+        halt_E = traci.edge.getLastStepHaltingNumber("E2TL")
+        halt_W = traci.edge.getLastStepHaltingNumber("W2TL")
+        queue_length = halt_N + halt_S + halt_E + halt_W
+        return queue_length

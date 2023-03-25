@@ -23,12 +23,12 @@ if __name__ == "__main__":
         config['batch_size'],
         config['learning_rate'],
         input_dimensions=config['num_states'],
-        output_dimensions=config['num_actions'],
+        output_dimensions=config['num_actions']
     )
 
     Replay_memory = Replay_memory(
         config['memory_size_max'],
-        config['memory_size_min'],
+        config['memory_size_min']
     )
     
     TrafficGen = TrafficGenerator(
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         config['yellow_duration'],
         config['num_states'],
         config['num_actions'],
-        config['training_epochs'],
+        config['training_epochs']
     )
 
     episode = 0
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     while episode < config['total_episodes']:
         print('\n----- Episode', str(episode+1), 'of', str(config['total_episodes']))
         epsilon = 1.0 - (episode / config['total_episodes'])  # set the epsilon for this episode according to epsilon-greedy policy
-        simulation_time, training_time = Simulation.run(episode, epsilon)  # run the simulation
+        simulation_time, training_time = Simulation.run_simulation(episode, epsilon)  # run the simulation
         print('Simulation time:', simulation_time, 's - Training time:', training_time, 's - Total:', round(simulation_time+training_time, 1), 's')
         episode += 1
 
@@ -64,6 +64,6 @@ if __name__ == "__main__":
         print("----- End time:", datetime.datetime.now())
         print("----- Session info saved at:", path)
     
-        Model.save_model(path)
+        Model.save_neural_net(path)
 
-        copyfile(src='training_settings.ini', dst=os.path.join(path, 'training_settings.ini'))
+        copyfile(src='config.ini', dst=os.path.join(path, 'config.ini'))

@@ -88,7 +88,8 @@ class Simulation:
             traci.close()
             simulation_time = round(timeit.default_timer() - start_time, 1)
 
-            for i in range(self._training_epochs):
+            print("TRAINING")
+            for _ in range(self._training_epochs):
                 # perform replay memory training on the neural net, one (batch) for each epoch selected
                 self._replay()
             training_time = round(timeit.default_timer() - start_time,1)

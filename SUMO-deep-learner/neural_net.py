@@ -1,16 +1,17 @@
 import os
 import numpy as np
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'  # kill warning about tensorflow
 
 from tensorflow import keras
 from keras import layers
 from keras import losses
-from keras.optimizers import Adam
-from keras.utils import plot_model
-from keras.models import load_model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.models import load_model
 
 
 class TrainNeuralNet:
-    def __init__(self, num_layers, input_dimensions, output_dimensions, width, batch_size, learning_rate):
+    def __init__(self, num_layers, width, batch_size, learning_rate, input_dimensions, output_dimensions):
         self.input_dimemsions = input_dimensions
         self._output_dimensions = output_dimensions
         self._batch_size = batch_size
@@ -42,8 +43,20 @@ class TrainNeuralNet:
     def train_batch(self, states, updated_Q):
         self._neural_net.fit(states, updated_Q, epochs=1)
 
-    def save_nerual_net(self, filepath):
-        self._model.save(os.path.join(filepath, 'trained_model.h5'))
-        plot_model(self._model, to_file=os.path.join(filepath, 'model_structure.png'), show_shapes=True, show_layer_names=True)
+    def save_neural_net(self, filepath):
+        self._neural_net.save(os.path.join(filepath, 'trained_model.h5'))
+        #plot_model(self._model, to_file=os.path.join(filepath, 'model_structure.png'), show_shapes=True, show_layer_names=True)
 
-        
+    @property
+    def input_dim(self):
+        return self._input_dim
+
+
+    @property
+    def output_dim(self):
+        return self._output_dim
+
+
+    @property
+    def batch_size(self):
+        return self._batch_size

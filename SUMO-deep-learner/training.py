@@ -19,15 +19,15 @@ class Simulation:
         self._neural_net = neural_net
         self._replay_memory = replay_memory
         self._TrafficGen = TrafficGen
-        self._sumo_cmd = sumo_cmd
         self._gamma = gamma
+        self._step = 0
+        self._sumo_cmd = sumo_cmd
         self._max_steps = max_steps
         self._green_duration = green_duration
         self._yellow_duration = yellow_duration
         self._num_states = num_states
         self._num_actions = num_actions
         self._training_epochs = training_epochs
-        self._step = 0
         self._reward_store = []
         self._cumulative_wait_store = []
         self._avg_queue_length_store = []
@@ -50,9 +50,11 @@ class Simulation:
         old_total_wait = 0
         old_state = -1
         old_action = -1
+        print("max = ", self._max_steps)
 
         while self._step < self._max_steps:
             # get state of intersection
+            #print("step--", self._step)
             current_state = self._get_state()
 
             # calculate reward of previous action (change in total waiting time between previous and current action)
@@ -62,7 +64,7 @@ class Simulation:
 
             if self._step != 0:
                 # add this state/action/reward to replay memory
-                self._Memory.add_sample((old_state, old_action, reward, current_state))
+                self._replay_memory.add_sample((old_state, old_action, reward, current_state))
 
             # choose next action to take
             action = self._choose_action(current_state, epsilon)
@@ -81,20 +83,22 @@ class Simulation:
             old_action = action
             old_total_wait = current_total_wait
 
-            self._sum_total_reward += reward
+            if reward > 0:
+                self._sum_total_reward += reward
 
-            self._save_episode_stats()
-            print("Total reward gained:", self._sum_total_reward, "- Epsilon:", round(epsilon, 2))
-            traci.close()
-            simulation_time = round(timeit.default_timer() - start_time, 1)
+        self._save_episode_stats()
+        print("Total reward gained:", self._sum_total_reward, "- Epsilon:", round(epsilon, 2))
+        traci.close()
+        simulation_time = round(timeit.default_timer() - start_time, 1)
 
-            print("TRAINING")
-            for _ in range(self._training_epochs):
-                # perform replay memory training on the neural net, one (batch) for each epoch selected
-                self._replay()
-            training_time = round(timeit.default_timer() - start_time,1)
+        print("TRAINING")
+        start_time = timeit.default_timer()
+        for _ in range(self._training_epochs):
+            # perform replay memory training on the neural net, one (batch) for each epoch selected
+            self._replay()
+        training_time = round(timeit.default_timer() - start_time,1)
 
-            return simulation_time, training_time
+        return simulation_time, training_time
         
     def _replay(self):
         batch = self._replay_memory.get_samples(self._neural_net.batch_size)
@@ -118,7 +122,7 @@ class Simulation:
                 x[i] = state
                 y[i] = current_q  # Q(state) that includes the updated action value
 
-            self._Model.train_batch(x, y)  # train the NN
+            self._neural_net.train_batch(x, y)  # train the NN
 
 
 
@@ -131,7 +135,7 @@ class Simulation:
         if random.random() < epsilon:
             return random.randint(0, self._num_actions - 1) # random action
         else:
-            return np.argmax(self._Model.predict_one(state)) # the best action given the current state
+            return np.argmax(self._neural_net.predict_single(state)) # the best action given the current state
 
 
 
@@ -202,7 +206,7 @@ class Simulation:
 
             if valid_car:
                 state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
-        print(state)
+        #print(state)
         return state
     
 
@@ -258,7 +262,7 @@ class Simulation:
             self._sum_waiting_time += new_queue_length
 
     def _save_episode_stats(self):
-        self._reward_store.append(self._sum_neg_reward)  # how much negative reward in this episode
+        self._reward_store.append(self._sum_total_reward)  # how much negative reward in this episode
         self._cumulative_wait_store.append(self._sum_waiting_time)  # total number of seconds waited by cars in this episode
         self._avg_queue_length_store.append(self._sum_queue_length / self._max_steps)  # average number of queued cars per step, in this episode
 
@@ -272,3 +276,17 @@ class Simulation:
         halt_W = traci.edge.getLastStepHaltingNumber("W2TL")
         queue_length = halt_N + halt_S + halt_E + halt_W
         return queue_length
+    
+    @property
+    def reward_store(self):
+        return self._reward_store
+
+
+    @property
+    def cumulative_wait_store(self):
+        return self._cumulative_wait_store
+
+
+    @property
+    def avg_queue_length_store(self):
+        return self._avg_queue_length_store

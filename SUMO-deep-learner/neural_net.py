@@ -41,7 +41,7 @@ class TrainNeuralNet:
         return self._neural_net.predict(states)
     
     def train_batch(self, states, updated_Q):
-        self._neural_net.fit(states, updated_Q, epochs=1)
+        self._neural_net.fit(states, updated_Q, epochs=1, verbose=0)
 
     def save_neural_net(self, filepath):
         self._neural_net.save(os.path.join(filepath, 'trained_model.h5'))

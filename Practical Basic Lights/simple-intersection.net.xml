@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-04-04 20:26:25 by Eclipse SUMO netedit Version 1.16.0
+<!-- generated on 2023-04-04 22:59:20 by Eclipse SUMO netedit Version 1.16.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Networks\simple-intersection.net.xml"/>
+        <sumo-net-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Basic Lights\simple-intersection.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Networks\simple-intersection.net.xml"/>
+        <output-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Basic Lights\simple-intersection.net.xml"/>
     </output>
 
     <processing>
@@ -113,8 +113,10 @@
     <tlLogic id="J5" type="static" programID="0" offset="0">
         <phase duration="42" state="GGgrrrGGgrrr"/>
         <phase duration="3"  state="yyyrrryyyrrr"/>
+        <phase duration="2"  state="rrrrrrrrrrrr"/>
         <phase duration="42" state="rrrGGgrrrGGg"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
+        <phase duration="2"  state="rrrrrrrrrrrr"/>
     </tlLogic>
 
     <junction id="J10" type="dead_end" x="0.00" y="-750.00" incLanes="-E6_0" intLanes="" shape="0.00,-750.00 -3.20,-750.00 0.00,-750.00"/>

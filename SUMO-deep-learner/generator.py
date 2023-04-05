@@ -84,7 +84,7 @@ class TrafficGenerator:
                             print('    <vehicle id="S_W_%i" type="standard_car" route="S_W" depart="%s" departLane="random" departSpeed="10" />' % (car_counter, step), file=routes)
                         elif route_turn == 8:
                             print('    <vehicle id="S_E_%i" type="standard_car" route="S_E" depart="%s" departLane="random" departSpeed="10" />' % (car_counter, step), file=routes)
-            print("</routes>", file=routes)
+                print("</routes>", file=routes)
 
         if networkID == 1:
             with open("intersection/episode_routes_simple-intersection.rou.xml", "w") as routes:

@@ -3,7 +3,7 @@ import numpy as np
 import random
 import timeit
 import os
-from utils import import_train_configuration, set_phaseID
+from utils import set_phaseID
 
 
 
@@ -309,10 +309,15 @@ class Simulation:
         """
         if networkID == 0:
             yellow_phase_code = old_action * 2 + 1 # obtain the yellow phase code, based on the old action (ref on environment.net.xml)
+            traci.trafficlight.setPhase("TL", yellow_phase_code)
         elif networkID == 1:
-            yellow_phase_code = old_action + 1 # obtain the yellow phase code, based on the old action (ref on simple-intersection.net.xml)
+            #yellow_phase_code = old_action + 1 # obtain the yellow phase code, based on the old action (ref on simple-intersection.net.xml)
+            if old_action == 0:
+                yellow_phase_code = 1
+            else:
+                yellow_phase_code = 3
+            traci.trafficlight.setPhase("J5", yellow_phase_code)
 
-        traci.trafficlight.setPhase("TL", yellow_phase_code)
 
     def _set_green_phase(self, action_number):
         """
@@ -329,9 +334,9 @@ class Simulation:
                 traci.trafficlight.setPhase("TL", PHASE_EWL_GREEN)
         elif networkID == 1:
             if action_number == 0:
-                traci.trafficlight.setPhase("TL", PHASE_NS_GREEN)
+                traci.trafficlight.setPhase("J5", PHASE_NS_GREEN)
             elif action_number == 1:
-                traci.trafficlight.setPhase("TL", PHASE_EW_GREEN)
+                traci.trafficlight.setPhase("J5", PHASE_EW_GREEN)
 
     def _simulate(self, steps_todo):
         # Execute steps in sumo

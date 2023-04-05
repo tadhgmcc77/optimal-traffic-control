@@ -110,7 +110,7 @@
         <lane id="E6_0" index="0" speed="13.89" length="742.80" shape="1.60,-750.00 1.60,-7.20"/>
     </edge>
 
-    <tlLogic id="TL" type="static" programID="0" offset="0">
+    <tlLogic id="J5" type="static" programID="0" offset="0">
         <phase duration="100" state="GGGrrrGGGrrr"/>
         <phase duration="100"  state="yyyrrryyyrrr"/>
         <phase duration="100" state="rrrGGGrrrGGG"/>

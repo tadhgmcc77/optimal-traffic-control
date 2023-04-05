@@ -107,3 +107,10 @@ def set_test_path(models_path_name, model_n):
         return model_folder_path, plot_path
     else: 
         sys.exit('The model number specified does not exist in the models folder')
+
+def set_phaseID(config_file):
+    content = configparser.ConfigParser()
+    content.read(config_file)
+    config = {}
+    config['networkID'] = content['simulation'].getint('networkID')
+    return config

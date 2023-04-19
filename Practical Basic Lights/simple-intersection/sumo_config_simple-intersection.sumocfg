@@ -7,6 +7,10 @@
         <route-files value="routes.rou.xml"/>
     </input>
 
+    <output>
+        <tripinfo-output value="trip_info.xml"/>
+    </output>
+    
     <time>
       <begin value="0"/>
     </time>

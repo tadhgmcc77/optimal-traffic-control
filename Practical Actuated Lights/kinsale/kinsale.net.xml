@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-04-04 23:59:12 by Eclipse SUMO netedit Version 1.16.0
+<!-- generated on 2023-04-18 23:28:51 by Eclipse SUMO netedit Version 1.16.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Actuated Lights\kinsale.net.xml"/>
+        <sumo-net-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Actuated Lights\kinsale\kinsale.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Actuated Lights\kinsale.net.xml"/>
+        <output-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Actuated Lights\kinsale\kinsale.net.xml"/>
     </output>
 
     <processing>
@@ -453,18 +453,18 @@
 
     <tlLogic id="2036623" type="actuated" programID="0" offset="0">
         <phase duration="42" state="rrrrGG" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="rrrryy"/>
+        <phase duration="3"  state="rrrryy"/>
         <phase duration="2"  state="rrrrrr"/>
         <phase duration="42" state="GGGGrr" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="yyyyrr"/>
+        <phase duration="3"  state="yyyyrr"/>
         <phase duration="2"  state="rrrrrr"/>
     </tlLogic>
     <tlLogic id="241744826" type="actuated" programID="0" offset="0">
         <phase duration="42" state="GGGGrrr" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="yyyyrrr"/>
+        <phase duration="3"  state="yyyyrrr"/>
         <phase duration="2"  state="rrrrrrr"/>
         <phase duration="42" state="rrrrGGG" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="rrrryyy"/>
+        <phase duration="3"  state="rrrryyy"/>
         <phase duration="2"  state="rrrrrrr"/>
     </tlLogic>
     <tlLogic id="322604703" type="static" programID="0" offset="0">
@@ -474,26 +474,26 @@
     </tlLogic>
     <tlLogic id="3565841" type="actuated" programID="0" offset="0">
         <phase duration="42" state="rrrGGG" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="rrryyy"/>
+        <phase duration="3"  state="rrryyy"/>
         <phase duration="2"  state="rrrrrr"/>
         <phase duration="42" state="GGGrrr" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="yyyrrr"/>
+        <phase duration="3"  state="yyyrrr"/>
         <phase duration="2"  state="rrrrrr"/>
     </tlLogic>
     <tlLogic id="9675765167" type="actuated" programID="0" offset="0">
         <phase duration="42" state="GGGrrr" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="yyyrrr"/>
+        <phase duration="3"  state="yyyrrr"/>
         <phase duration="2"  state="rrrrrr"/>
         <phase duration="42" state="rrrGGG" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="rrryyy"/>
+        <phase duration="3"  state="rrryyy"/>
         <phase duration="2"  state="rrrrrr"/>
     </tlLogic>
     <tlLogic id="9675765169" type="actuated" programID="0" offset="0">
         <phase duration="42" state="rrGG" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="rryy"/>
+        <phase duration="3"  state="rryy"/>
         <phase duration="2"  state="rrrr"/>
         <phase duration="42" state="GGrr" minDur="10" maxDur="60"/>
-        <phase duration="6"  state="yyrr"/>
+        <phase duration="3"  state="yyrr"/>
         <phase duration="2"  state="rrrr"/>
     </tlLogic>
 

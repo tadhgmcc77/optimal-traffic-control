@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-04-04 20:43:59 by Eclipse SUMO netedit Version 1.16.0
+<!-- generated on 2023-04-18 23:20:41 by Eclipse SUMO netedit Version 1.16.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Basic Lights\temp-roundabout.net.xml"/>
+        <sumo-net-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Basic Lights\simple-roundabout\temp-roundabout.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Basic Lights\temp-roundabout.net.xml"/>
+        <output-file value="C:\Users\tadhg_wmtcpnz\Desktop\SUMO-repo\optimal-traffic-control\Practical Basic Lights\simple-roundabout\temp-roundabout.net.xml"/>
     </output>
 
     <processing>
@@ -121,26 +121,34 @@
     <tlLogic id="J6" type="static" programID="0" offset="0">
         <phase duration="42" state="GGrr"/>
         <phase duration="3"  state="yGrr"/>
+        <phase duration="2"  state="rGrr"/>
         <phase duration="42" state="rGGG"/>
         <phase duration="3"  state="rGyy"/>
+        <phase duration="2"  state="rGrr"/>
     </tlLogic>
     <tlLogic id="J7" type="static" programID="0" offset="0">
         <phase duration="42" state="GGrr"/>
         <phase duration="3"  state="yGrr"/>
+        <phase duration="2"  state="rGrr"/>
         <phase duration="42" state="rGGG"/>
         <phase duration="3"  state="rGyy"/>
+        <phase duration="2"  state="rGrr"/>
     </tlLogic>
     <tlLogic id="J8" type="static" programID="0" offset="0">
         <phase duration="42" state="GGrr"/>
         <phase duration="3"  state="yGrr"/>
+        <phase duration="2"  state="rGrr"/>
         <phase duration="42" state="rGGG"/>
         <phase duration="3"  state="rGyy"/>
+        <phase duration="2"  state="rGrr"/>
     </tlLogic>
     <tlLogic id="J9" type="static" programID="0" offset="0">
         <phase duration="42" state="GGGr"/>
         <phase duration="3"  state="Gyyr"/>
+        <phase duration="2"  state="Grrr"/>
         <phase duration="42" state="GrrG"/>
         <phase duration="3"  state="Grry"/>
+        <phase duration="2"  state="Grrr"/>
     </tlLogic>
 
     <junction id="J2" type="dead_end" x="-750.00" y="0.00" incLanes="E00_0" intLanes="" shape="-750.00,0.00 -750.00,3.20 -750.00,0.00"/>

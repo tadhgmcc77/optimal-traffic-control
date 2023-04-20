@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-04-18 23:23:32 by Eclipse SUMO netedit Version 1.16.0
+<!-- generated on 2023-04-20 22:30:13 by Eclipse SUMO netedit Version 1.16.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
@@ -111,12 +111,13 @@
     </edge>
 
     <tlLogic id="J5" type="actuated" programID="0" offset="0">
-        <phase duration="42" state="GGgrrrgggrrr" minDur="10" maxDur="60"/>
+        <phase duration="42" state="GGgrrrgggrrr"/>
         <phase duration="3"  state="yyyrrryyyrrr"/>
-        <phase duration="2"  state="rrrrrrrrrrrr"/>
-        <phase duration="42" state="rrrGGgrrrggg" minDur="10" maxDur="60"/>
+        <phase duration="3"  state="rrrrrrrrrrrr"/>
+        <phase duration="42" state="rrrGGgrrrggg"/>
         <phase duration="3"  state="rrryyyrrryyy"/>
-        <phase duration="2"  state="rrrrrrrrrrrr"/>
+        <phase duration="3"  state="rrrrrrrrrrrr"/>
+        <param key="show-detectors" value="true"/>
     </tlLogic>
 
     <junction id="J10" type="dead_end" x="0.00" y="-750.00" incLanes="-E6_0" intLanes="" shape="0.00,-750.00 -3.20,-750.00 0.00,-750.00"/>

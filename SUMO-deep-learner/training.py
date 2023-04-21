@@ -39,6 +39,14 @@ elif networkID == 2:
     PHASE_NS_THROUGH_YELLOW = 4
     PHASE_NS_THROUGH_RED = 5
 
+elif networkID == 3:
+    # phase codes based on kinsale.net.xml
+    PHASE_NS_GREEN = 0  # action 0 code 00
+    PHASE_NS_YELLOW = 1
+    PHASE_EW_GREEN = 2  # action 1 code 01
+    PHASE_EW_YELLOW = 3
+
+
 class Simulation:
     def __init__(self, neural_net, replay_memory, TrafficGen, sumo_cmd, gamma, max_steps, green_duration, yellow_duration, num_states, num_actions, training_epochs):
         self._neural_net = neural_net
@@ -313,13 +321,13 @@ class Simulation:
                 elif lane_pos <= 750:
                     lane_cell = 9
 
-                if lane_id == "-E0":
+                if lane_id == "-E0_0":
                     lane_group = 0
-                elif lane_id == "-E1":
+                elif lane_id == "-E1_0":
                     lane_group = 1
-                elif lane_id == "-E2":
+                elif lane_id == "-E2_0":
                     lane_group = 2
-                elif lane_id == "-E3":
+                elif lane_id == "-E3_0":
                     lane_group = 3
                 else:
                     lane_group = -1
@@ -335,7 +343,57 @@ class Simulation:
 
                 if valid_car:
                     state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
-        
+
+        elif networkID == 3:
+            for car_id in car_list:
+                lane_pos = traci.vehicle.getLanePosition(car_id)
+                lane_id = traci.vehicle.getLaneID(car_id)
+                lane_pos = 750 - lane_pos  # inversion of lane pos, so if the car is close to the traffic light -> lane_pos = 0 --- 750 = max len of a road
+
+                # distance in meters from the traffic light -> mapping into cells
+                if lane_pos < 7:
+                    lane_cell = 0
+                elif lane_pos < 14:
+                    lane_cell = 1
+                elif lane_pos < 21:
+                    lane_cell = 2
+                elif lane_pos < 28:
+                    lane_cell = 3
+                elif lane_pos < 40:
+                    lane_cell = 4
+                elif lane_pos < 60:
+                    lane_cell = 5
+                elif lane_pos < 100:
+                    lane_cell = 6
+                elif lane_pos < 160:
+                    lane_cell = 7
+                elif lane_pos < 400:
+                    lane_cell = 8
+                elif lane_pos <= 750:
+                    lane_cell = 9
+
+                if lane_id == "E9":
+                    lane_group = 0
+                elif lane_id == "E10":
+                    lane_group = 1
+                elif lane_id == "E11":
+                    lane_group = 2
+                elif lane_id == "E8":
+                    lane_group = 3
+                else:
+                    lane_group = -1
+
+                if lane_group >= 1 and lane_group <= 3:
+                    car_position = int(str(lane_group) + str(lane_cell))  # composition of the two postion ID to create a number in interval 0-39
+                    valid_car = True
+                elif lane_group == 0:
+                    car_position = lane_cell
+                    valid_car = True
+                else:
+                    valid_car = False  # flag for not detecting cars crossing the intersection or driving away from it
+
+                if valid_car:
+                    state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
 
         #print(state)
         return state
@@ -351,6 +409,8 @@ class Simulation:
             incoming_roads = ["E3", "E5", "E4", "E6"]
         elif networkID == 2:
             incoming_roads = ["-E0", "-E1", "-E2", "-E3"]
+        elif networkID == 3:
+            incoming_roads = ["E9", "E10", "E11", "E8"]
 
         car_list = traci.vehicle.getIDList()
         for car_id in car_list:
@@ -389,7 +449,15 @@ class Simulation:
             traci.trafficlight.setPhase("J7", yellow_phase_code)
             traci.trafficlight.setPhase("J9", yellow_phase_code)
 
-
+        elif networkID == 3:
+            if old_action == 0:
+                yellow_phase_code = 1
+            else:
+                yellow_phase_code = 3
+            traci.trafficlight.setPhase("J20", yellow_phase_code)
+            traci.trafficlight.setPhase("J21", yellow_phase_code)
+            traci.trafficlight.setPhase("J22", yellow_phase_code)
+            traci.trafficlight.setPhase("J23", yellow_phase_code)
 
     def _set_green_phase(self, action_number):
         """
@@ -404,11 +472,13 @@ class Simulation:
                 traci.trafficlight.setPhase("TL", PHASE_EW_GREEN)
             elif action_number == 3:
                 traci.trafficlight.setPhase("TL", PHASE_EWL_GREEN)
+
         elif networkID == 1:
             if action_number == 0:
                 traci.trafficlight.setPhase("J5", PHASE_NS_GREEN)
             elif action_number == 1:
                 traci.trafficlight.setPhase("J5", PHASE_EW_GREEN)
+
         elif networkID == 2:
             if action_number == 0:
                 traci.trafficlight.setPhase("J6", PHASE_NS_GREEN)
@@ -421,6 +491,18 @@ class Simulation:
                 traci.trafficlight.setPhase("J9", PHASE_NS_THROUGH)
                 traci.trafficlight.setPhase("J7", PHASE_NS_THROUGH)
 
+        elif networkID == 3:
+            if action_number == 0:
+                traci.trafficlight.setPhase("J20", PHASE_NS_GREEN)
+                traci.trafficlight.setPhase("J21", PHASE_NS_GREEN)
+                traci.trafficlight.setPhase("J22", PHASE_NS_GREEN)
+                traci.trafficlight.setPhase("J23", PHASE_NS_GREEN)
+            if action_number == 1:
+                traci.trafficlight.setPhase("J20", PHASE_EW_GREEN)
+                traci.trafficlight.setPhase("J21", PHASE_EW_GREEN)
+                traci.trafficlight.setPhase("J22", PHASE_EW_GREEN)
+                traci.trafficlight.setPhase("J23", PHASE_EW_GREEN)
+    
     def _simulate(self, steps_todo):
         # Execute steps in sumo
         if (self._step + steps_todo) >= self._max_steps:
@@ -464,6 +546,14 @@ class Simulation:
             halt_E = traci.edge.getLastStepHaltingNumber("-E2")
             halt_S = traci.edge.getLastStepHaltingNumber("-E3")
             queue_length = halt_W + halt_N + halt_E + halt_S
+
+        elif networkID == 3:
+            halt_W = traci.edge.getLastStepHaltingNumber("E9")
+            halt_N = traci.edge.getLastStepHaltingNumber("E10")
+            halt_E = traci.edge.getLastStepHaltingNumber("E11")
+            halt_S = traci.edge.getLastStepHaltingNumber("E8")
+            queue_length = halt_W + halt_N + halt_E + halt_S
+
         return queue_length
     
     @property

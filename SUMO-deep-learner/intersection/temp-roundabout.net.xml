@@ -117,38 +117,39 @@
         <lane id="E6_0" index="0" speed="13.89" length="23.75" shape="-6.46,23.98 -12.42,21.51 -17.56,17.56 -21.51,12.42 -23.98,6.46"/>
         <lane id="E6_1" index="1" speed="13.89" length="23.75" shape="-6.02,20.70 -10.81,18.72 -15.28,15.28 -18.72,10.81 -20.70,6.02"/>
     </edge>
-
+<!-- -E0 -E1 -E2 -E3-->
+<!-- 9 6 7 8 -->
     <tlLogic id="J6" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGrr"/>
-        <phase duration="3"  state="yGrr"/>
-        <phase duration="2"  state="rGrr"/>
-        <phase duration="42" state="rGGG"/>
-        <phase duration="3"  state="rGyy"/>
-        <phase duration="2"  state="rGrr"/>
-    </tlLogic>
-    <tlLogic id="J7" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGrr"/>
-        <phase duration="3"  state="yGrr"/>
-        <phase duration="2"  state="rGrr"/>
-        <phase duration="42" state="rGGG"/>
-        <phase duration="3"  state="rGyy"/>
-        <phase duration="2"  state="rGrr"/>
+        <phase duration="100" state="GGrr"/>
+        <phase duration="100"  state="yGrr"/>
+        <phase duration="100"  state="rGrr"/>
+        <phase duration="100" state="rGGG"/>
+        <phase duration="100"  state="rGyy"/>
+        <phase duration="100"  state="rGrr"/>
     </tlLogic>
     <tlLogic id="J8" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGrr"/>
-        <phase duration="3"  state="yGrr"/>
-        <phase duration="2"  state="rGrr"/>
-        <phase duration="42" state="rGGG"/>
-        <phase duration="3"  state="rGyy"/>
-        <phase duration="2"  state="rGrr"/>
+        <phase duration="100" state="GGrr"/>
+        <phase duration="100"  state="yGrr"/>
+        <phase duration="100"  state="rGrr"/>
+        <phase duration="100" state="rGGG"/>
+        <phase duration="100"  state="rGyy"/>
+        <phase duration="100"  state="rGrr"/>
+    </tlLogic>
+    <tlLogic id="J7" type="static" programID="0" offset="0">
+        <phase duration="100" state="rGGG"/>
+        <phase duration="100"  state="rGyy"/>
+        <phase duration="100"  state="rGrr"/>
+        <phase duration="100" state="GGrr"/>
+        <phase duration="100"  state="yGrr"/>
+        <phase duration="100"  state="rGrr"/>
     </tlLogic>
     <tlLogic id="J9" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGGr"/>
-        <phase duration="3"  state="Gyyr"/>
-        <phase duration="2"  state="Grrr"/>
-        <phase duration="42" state="GrrG"/>
-        <phase duration="3"  state="Grry"/>
-        <phase duration="2"  state="Grrr"/>
+        <phase duration="100" state="GGGr"/>
+        <phase duration="100"  state="Gyyr"/>
+        <phase duration="100"  state="Grrr"/>
+        <phase duration="100" state="GrrG"/>
+        <phase duration="100"  state="Grry"/>
+        <phase duration="100"  state="Grrr"/>
     </tlLogic>
 
     <junction id="J2" type="dead_end" x="-750.00" y="0.00" incLanes="E00_0" intLanes="" shape="-750.00,0.00 -750.00,3.20 -750.00,0.00"/>

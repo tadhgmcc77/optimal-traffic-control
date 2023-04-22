@@ -297,8 +297,7 @@ class Simulation:
             for car_id in car_list:
                 lane_pos = traci.vehicle.getLanePosition(car_id)
                 lane_id = traci.vehicle.getLaneID(car_id)
-                lane_pos = 750 - lane_pos  # inversion of lane pos, so if the car is close to the traffic light -> lane_pos = 0 --- 750 = max len of a road
-
+                lane_pos = 720 - lane_pos  # inversion of lane pos, so if the car is close to the traffic light -> lane_pos = 0 --- 750 = max len of a road
                 # distance in meters from the traffic light -> mapping into cells
                 if lane_pos < 7:
                     lane_cell = 0
@@ -343,6 +342,7 @@ class Simulation:
 
                 if valid_car:
                     state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
+                
 
         elif networkID == 3:
             for car_id in car_list:

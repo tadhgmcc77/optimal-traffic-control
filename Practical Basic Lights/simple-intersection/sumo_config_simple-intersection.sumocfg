@@ -9,6 +9,7 @@
 
     <output>
         <tripinfo-output value="trip_info.xml"/>
+        <summary-output value="summary.xml"/>
     </output>
     
     <time>

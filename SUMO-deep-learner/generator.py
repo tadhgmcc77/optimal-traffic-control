@@ -21,7 +21,8 @@ class TrafficGenerator:
         np.random.seed(seed)  # make tests reproducible
 
         # the generation of cars is distributed according to a weibull distribution
-        timings = np.random.weibull(2, self._n_cars_generated)
+        #timings = np.random.normal(0, self._n_cars_generated)
+        timings = np.random.normal(0.0, 2.0, self._n_cars_generated)
         timings = np.sort(timings)
 
         # reshape the distribution to fit the interval 0:max_steps

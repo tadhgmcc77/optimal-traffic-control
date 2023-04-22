@@ -270,13 +270,13 @@ class Simulation:
                 elif lane_pos <= 750:
                     lane_cell = 9
 
-                if lane_id == "E3":
+                if lane_id == "E3_0":
                     lane_group = 0
-                elif lane_id == "E5":
+                elif lane_id == "E5_0":
                     lane_group = 1
-                elif lane_id == "E4":
+                elif lane_id == "E4_0":
                     lane_group = 2
-                elif lane_id == "E6":
+                elif lane_id == "E6_0":
                     lane_group = 3
                 else:
                     lane_group = -1
@@ -292,6 +292,7 @@ class Simulation:
 
                 if valid_car:
                     state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
+
         
         elif networkID == 2:
             for car_id in car_list:

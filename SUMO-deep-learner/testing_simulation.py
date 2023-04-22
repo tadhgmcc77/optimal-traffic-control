@@ -3,17 +3,46 @@ import numpy as np
 import random
 import timeit
 import os
+from utils import set_phaseID
 
-# phase codes based on environment.net.xml
-PHASE_NS_GREEN = 0  # action 0 code 00
-PHASE_NS_YELLOW = 1
-PHASE_NSL_GREEN = 2  # action 1 code 01
-PHASE_NSL_YELLOW = 3
-PHASE_EW_GREEN = 4  # action 2 code 10
-PHASE_EW_YELLOW = 5
-PHASE_EWL_GREEN = 6  # action 3 code 11
-PHASE_EWL_YELLOW = 7
+config = set_phaseID(config_file='config.ini')
 
+networkID = config['networkID']
+
+if networkID == 0:
+
+    # phase codes based on environment.net.xml
+    PHASE_NS_GREEN = 0  # action 0 code 00
+    PHASE_NS_YELLOW = 1
+    PHASE_NSL_GREEN = 2  # action 1 code 01
+    PHASE_NSL_YELLOW = 3
+    PHASE_EW_GREEN = 4  # action 2 code 10
+    PHASE_EW_YELLOW = 5
+    PHASE_EWL_GREEN = 6  # action 3 code 11
+    PHASE_EWL_YELLOW = 7
+
+elif networkID == 1:
+    # phase codes based on simple-intersection.net.xml
+    PHASE_NS_GREEN = 0  # action 0 code 00
+    PHASE_NS_YELLOW = 1
+    PHASE_EW_GREEN = 2  # action 1 code 01
+    PHASE_EW_YELLOW = 3
+
+elif networkID == 2:
+    # phase codes based on simple-roundabout.net.xml
+    PHASE_NS_GREEN = 0 # action 0 code 00
+    PHASE_NS_YELLOW = 1
+    PHASE_NS_RED = 2
+    PHASE_NS_THROUGH = 3 # action 1 code 01
+    PHASE_NS_THROUGH_YELLOW = 4
+    PHASE_NS_THROUGH_RED = 5
+
+elif networkID == 3:
+    # phase codes based on kinsale.net.xml
+    PHASE_NS_GREEN = 0  # action 0 code 00
+    PHASE_NS_YELLOW = 1
+    PHASE_EW_GREEN = 2  # action 1 code 01
+    PHASE_EW_YELLOW = 3
 
 class Simulation:
     def __init__(self, neural_net, TrafficGen, sumo_cmd, max_steps, green_duration, yellow_duration, num_states, num_actions):

@@ -348,7 +348,8 @@ class Simulation:
             for car_id in car_list:
                 lane_pos = traci.vehicle.getLanePosition(car_id)
                 lane_id = traci.vehicle.getLaneID(car_id)
-                lane_pos = 750 - lane_pos  # inversion of lane pos, so if the car is close to the traffic light -> lane_pos = 0 --- 750 = max len of a road
+                lane_pos = 640 - lane_pos  # inversion of lane pos, so if the car is close to the traffic light -> lane_pos = 0 --- 750 = max len of a road
+                print(car_id, lane_pos)
 
                 # distance in meters from the traffic light -> mapping into cells
                 if lane_pos < 7:
@@ -372,13 +373,13 @@ class Simulation:
                 elif lane_pos <= 750:
                     lane_cell = 9
 
-                if lane_id == "E9":
+                if lane_id == "E9_0" or lane_id == "E9_1" or lane_id == "E9_2":
                     lane_group = 0
-                elif lane_id == "E10":
+                elif lane_id == "E10_0" or lane_id == "E10_1":
                     lane_group = 1
-                elif lane_id == "E11":
+                elif lane_id == "E11_0" or lane_id == "E11_1" or lane_id == "E11_2":
                     lane_group = 2
-                elif lane_id == "E8":
+                elif lane_id == "E8_0" or lane_id == "E8_1" or lane_id == "E8_2":
                     lane_group = 3
                 else:
                     lane_group = -1
@@ -394,8 +395,6 @@ class Simulation:
 
                 if valid_car:
                     state[car_position] = 1  # write the position of the car car_id in the state array in the form of "cell occupied"
-
-        #print(state)
         return state
     
 

@@ -24,6 +24,8 @@ class TrafficGenerator:
         #timings = np.random.normal(0, self._n_cars_generated)
         timings = np.random.normal(0.0, 2.0, self._n_cars_generated)
         timings = np.sort(timings)
+        timings = np.delete(timings, 0)
+        timings = np.delete(timings, 0)
 
         # reshape the distribution to fit the interval 0:max_steps
         car_gen_steps = []

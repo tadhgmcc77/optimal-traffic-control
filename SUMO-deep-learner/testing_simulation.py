@@ -451,7 +451,6 @@ class Simulation:
                 lane_pos = traci.vehicle.getLanePosition(car_id)
                 lane_id = traci.vehicle.getLaneID(car_id)
                 lane_pos = 640 - lane_pos  # inversion of lane pos, so if the car is close to the traffic light -> lane_pos = 0 --- 750 = max len of a road
-                print(car_id, lane_pos)
 
                 # distance in meters from the traffic light -> mapping into cells
                 if lane_pos < 7:

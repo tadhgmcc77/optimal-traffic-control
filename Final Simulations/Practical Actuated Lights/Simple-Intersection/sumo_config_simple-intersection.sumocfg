@@ -4,11 +4,17 @@
 
     <input>
         <net-file value="simple-intersection.net.xml"/>
-        <route-files value="routes.rou.xml"/>
+        <route-files value="simple-intersection-heavy.rou.xml"/>
     </input>
 
+    <output>
+        <tripinfo-output value="SI-trip_info-heavy.xml"/>
+        <summary-output value="SI-summary-heavy.xml"/>
+    </output>
+    
     <time>
       <begin value="0"/>
+      <end value="1800"/>
     </time>
 
     <processing>

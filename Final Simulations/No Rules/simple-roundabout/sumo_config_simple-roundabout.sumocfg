@@ -4,11 +4,17 @@
 
     <input>
         <net-file value="temp-roundabout.net.xml"/>
-        <route-files value="routes.rou.xml"/>
+        <route-files value="simple-roundabout-low.rou.xml"/>
     </input>
 
+    <output>
+        <tripinfo-output value="SR-trip_info-low.xml"/>
+        <summary-output value="SR-summary-low.xml"/>
+    </output>
+    
     <time>
       <begin value="0"/>
+      <end value="1800"/>
     </time>
 
     <processing>

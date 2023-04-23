@@ -4,11 +4,17 @@
 
     <input>
         <net-file value="kinsale.net.xml"/>
-        <route-files value="routes.rou.xml"/>
+        <route-files value="kinsale-heavy.rou.xml"/>
     </input>
 
+    <output>
+        <tripinfo-output value="K-trip_info-heavy.xml"/>
+        <summary-output value="K-summary-heavy.xml"/>
+    </output>
+    
     <time>
       <begin value="0"/>
+      <end value="1800"/>
     </time>
 
     <processing>

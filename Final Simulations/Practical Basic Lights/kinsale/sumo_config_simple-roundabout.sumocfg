@@ -4,12 +4,12 @@
 
     <input>
         <net-file value="kinsale.net.xml"/>
-        <route-files value="kinsale-heavy.rou.xml"/>
+        <route-files value="kinsale-low.rou.xml"/>
     </input>
 
     <output>
-        <tripinfo-output value="K-trip_info-heavy.xml"/>
-        <summary-output value="K-summary-heavy.xml"/>
+        <tripinfo-output value="BASIC-K-trip_info-low.xml"/>
+        <summary-output value="BASIC-K-summary-low.xml"/>
     </output>
     
     <time>

@@ -4,12 +4,12 @@
 
     <input>
         <net-file value="temp-roundabout.net.xml"/>
-        <route-files value="simple-roundabout-low.rou.xml"/>
+        <route-files value="simple-roundabout-heavy.rou.xml"/>
     </input>
 
     <output>
-        <tripinfo-output value="SR-trip_info-low.xml"/>
-        <summary-output value="SR-summary-low.xml"/>
+        <tripinfo-output value="SR-trip_info-heavy.xml"/>
+        <summary-output value="ACTUATED-SR-summary-heavy.xml"/>
     </output>
     
     <time>

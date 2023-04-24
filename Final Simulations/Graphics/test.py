@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 
 # Parse the XML file and get the root element
-tree = ET.parse('BASIC-K-summary-low.xml')
+tree = ET.parse('BASIC-SI-summary-low.xml')
 root = tree.getroot()
 waiting_times = []
 times = []
@@ -35,7 +35,7 @@ for step in root.findall('step'):
     counter += 1
 
 
-tree2 = ET.parse('ADAPTIVE-K-summary-low.xml')
+tree2 = ET.parse('ADAPTIVE-SI-summary-low.xml')
 root2 = tree2.getroot()
 waiting_times2 = []
 times2 = []
@@ -53,7 +53,7 @@ for step in root2.findall('step'):
 
 
 
-tree3 = ET.parse('ACTUATED-K-summary-low.xml')
+tree3 = ET.parse('ACTUATED-SI-summary-low.xml')
 root3 = tree3.getroot()
 waiting_times3 = []
 times3 = []
@@ -69,7 +69,7 @@ for step in root3.findall('step'):
     times3.append(time)
 
     
-tree4 = ET.parse('K-summary-low.xml')
+tree4 = ET.parse('SI-summary-low.xml')
 root4 = tree4.getroot()
 waiting_times4 = []
 times4 = []

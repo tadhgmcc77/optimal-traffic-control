@@ -3,13 +3,18 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="kinsale.net.xml"/>
+        <net-file value="simple-intersection.net.xml"/>
         <route-files value="episode_routes_simple-intersection.rou.xml"/>
     </input>
 
     <time>
       <begin value="0"/>
     </time>
+
+    <output>
+        <tripinfo-output value="trip_info-heavy.xml"/>
+        <summary-output value="ADAPTIVE-summary-heavy.xml"/>
+    </output>
     <processing>
         <time-to-teleport value="-1"/>
     </processing>

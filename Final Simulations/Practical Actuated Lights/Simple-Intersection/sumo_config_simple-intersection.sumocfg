@@ -4,7 +4,7 @@
 
     <input>
         <net-file value="simple-intersection.net.xml"/>
-        <route-files value="episode_routes_simple-intersection.rou.xml"/>
+        <route-files value="simple-intersection-medium.rou.xml"/>
     </input>
 
     <output>
